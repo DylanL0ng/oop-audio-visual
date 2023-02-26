@@ -1,0 +1,10 @@
+{
+    "java.debug.settings.onBuildFailureProceed": true,
+    "java.project.sourcePaths": [
+        "java/lib"
+    ],
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "java/lib/core.jar"
+    ]
+}
