@@ -10,6 +10,8 @@ public class Audio1 extends PApplet {
 
     Minim minim;
 
+    SceneA sceneA;
+
     // All of these classes require imports from the minim library.
     AudioInput ai; // Reads from the microphone
     AudioPlayer ap; // Plays audio
@@ -37,6 +39,8 @@ public class Audio1 extends PApplet {
     }
 
     public void draw() {
+        // sceneA.render();
+        
         background(0);
         stroke(255);
 
