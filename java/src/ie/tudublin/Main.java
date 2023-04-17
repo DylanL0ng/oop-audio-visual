@@ -3,15 +3,15 @@ package ie.tudublin;
 public class Main
 {
 
-	public static void audio1()
+	public static void audioVisual()
 	{
 		String[] a = {"MAIN"};
-        processing.core.PApplet.runSketch( a, new Audio1());
+        processing.core.PApplet.runSketch( a, new AudioVisual());
     }
 	
 	public static void main(String[] args)
 	{
-		audio1();
+		audioVisual();
 	}
 	
 }
