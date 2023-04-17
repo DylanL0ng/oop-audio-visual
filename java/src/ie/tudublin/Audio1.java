@@ -1,9 +1,6 @@
 package ie.tudublin;
 
 import ddf.minim.AudioBuffer;
-import ddf.minim.AudioInput;
-import ddf.minim.AudioPlayer;
-import ddf.minim.Minim;
 import processing.core.PApplet;
 
 public class Audio1 {
@@ -15,11 +12,6 @@ public class Audio1 {
 
     PApplet p;
 
-    Minim minim;
-
-    // All of these classes require imports from the minim library.
-    AudioInput ai; // Reads from the microphone
-    AudioPlayer ap; // Plays audio
     AudioBuffer ab; // A buffer containing all of the audio samples.
 
     public void render() {
