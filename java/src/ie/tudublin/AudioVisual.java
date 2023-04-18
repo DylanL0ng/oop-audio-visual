@@ -3,6 +3,7 @@ package ie.tudublin;
 public class AudioVisual extends Visual {
 
     Audio1 example;
+    LifeBoard life;
 
     public void settings() {
         size(1024, 800);
@@ -23,6 +24,8 @@ public class AudioVisual extends Visual {
          */
 
         example = new Audio1(ab, this);
+        life = new LifeBoard(frameSize / 10, ab, this);
+        life.randomise();
 
         ap.play();
 
@@ -49,6 +52,8 @@ public class AudioVisual extends Visual {
          * rokas.render();
          */
 
-        example.render();
+        // example.render();
+        life.render();
+        life.setMouse();
     }
 }
