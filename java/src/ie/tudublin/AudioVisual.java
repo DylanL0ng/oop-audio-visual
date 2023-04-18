@@ -55,5 +55,23 @@ public class AudioVisual extends Visual {
         // example.render();
         life.render();
         life.setMouse();
+
+        if (detectBeat()) {
+            life.randomise();
+        }
+    }
+
+    public boolean detectBeat() {
+        int songLength = (int) (ap.length() / 1000.0f);
+        int current = (int) (ap.position() / 1000.0f);
+        int bpm = 79;
+        int beatInterval = songLength / bpm;
+
+        if (current % beatInterval == 0) {
+            System.out.println("True");
+            return true;
+        } else {
+            return false;
+        }
     }
 }
