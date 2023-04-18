@@ -28,11 +28,13 @@ public class AudioVisual extends Visual {
         life.randomise();
 
         ap.play();
+        ap.skip((ap.length() / 2) + 35000);
 
     }
 
     public void keyPressed() {
         if (key == ' ') {
+            life.pause();
             if (ap.isPlaying()) {
                 ap.pause();
             } else {
@@ -54,24 +56,24 @@ public class AudioVisual extends Visual {
 
         // example.render();
         life.render();
-        life.setMouse();
 
-        if (detectBeat()) {
-            life.randomise();
-        }
     }
 
     public boolean detectBeat() {
-        int songLength = (int) (ap.length() / 1000.0f);
-        int current = (int) (ap.position() / 1000.0f);
-        int bpm = 79;
-        int beatInterval = songLength / bpm;
-
-        if (current % beatInterval == 0) {
-            System.out.println("True");
-            return true;
-        } else {
-            return false;
+        float sum = 0;
+        for (int i = 0; i < ab.size(); i++) {
+            sum += abs(ab.get(i));
         }
+
+        float average = sum / ab.size();
+        float threshold = (float) (4 * average);
+
+        for (int i = 0; i < ab.size(); i++) {
+            if (abs(ab.get(i)) > threshold) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -1,18 +1,19 @@
 package ie.tudublin;
 
 import ddf.minim.AudioBuffer;
-import processing.core.PApplet;
 
 public class LifeBoard {
     boolean[][] board;
     boolean[][] next;
     private int size;
     AudioBuffer ab;
-    PApplet p;
+    AudioVisual p;
     float cellWidth;
     boolean running = true;
 
-    public LifeBoard(int size, AudioBuffer ab, PApplet p) {
+    boolean[][] creeper;
+
+    public LifeBoard(int size, AudioBuffer ab, AudioVisual p) {
         this.size = size;
         board = new boolean[size][size];
         next = new boolean[size][size];
@@ -94,29 +95,55 @@ public class LifeBoard {
         } // end for 
     }
 
+    public void randomlyRandom() {
+        if (!running) {
+            pause();
+        }
+        
+        /* 
+         * Using values of 1 and size - 1 ensures the numbers are kept within the bounds of the array,
+         * with respect to the loops which will access the indices before and after the random index.
+         */
+        int rand1 = (int) p.random(1, size - 1);
+        int rand2 = (int) p.random(1, size - 1);
+
+        
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (i != 0 || j != 0) {
+                   board[rand1 + i][rand2 + j] = true;   
+                }
+            } // end for
+        } // end for 
+        
+    }
+
     public void render() {
         // If the simulation is paused, the render() method won't run.
         if (!running) {
             return;
+        } else if (p.detectBeat()) {
+            randomlyRandom();
         }
 
         // The background is set to zero within this method so that the simulation will just pause and not be cleared.
         p.background(0);
         applyRules();
-
+        
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 float x = col * cellWidth;
                 float y = row * cellWidth;
                 
                 if (board[row][col]) {
-                    p.fill(p.random(0, 255), 255, 255);
+                    p.fill(128, 255, 255);
                 } else {
                     p.fill(0);
                 }
                 p.rect(x, y, cellWidth, cellWidth);
             }
         }
+        setMouse();
     }
     
     public int getSize() {
