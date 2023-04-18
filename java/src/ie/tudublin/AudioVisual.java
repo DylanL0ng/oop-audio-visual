@@ -3,6 +3,7 @@ package ie.tudublin;
 public class AudioVisual extends Visual {
 
     Audio1 example;
+    rokas rokas;
 
     public void settings() {
         size(1024, 800);
@@ -14,7 +15,7 @@ public class AudioVisual extends Visual {
         background(0);
 
         startMinim();
-        loadAudio("java/data/aria_math.mp3");
+        loadAudio("data/aria_math.mp3");
         
         smooth();
         /*
@@ -23,6 +24,7 @@ public class AudioVisual extends Visual {
          */
 
         example = new Audio1(ab, this);
+        rokas = new rokas(ab, this);
 
         ap.play();
 
@@ -49,6 +51,7 @@ public class AudioVisual extends Visual {
          * rokas.render();
          */
 
-        example.render();
+        // example.render();
+        rokas.render();
     }
 }
