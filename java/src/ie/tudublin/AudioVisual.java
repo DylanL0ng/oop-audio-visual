@@ -43,7 +43,7 @@ public class AudioVisual extends Visual {
         } 
 
         if (key == 'a') {
-            life.randomRules();
+            life.setLifeGrid(30, 30);
         }
     }
 
