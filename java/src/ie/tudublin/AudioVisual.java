@@ -40,6 +40,10 @@ public class AudioVisual extends Visual {
             } else {
                 ap.play();
             }
+        } 
+
+        if (key == 'a') {
+            life.randomRules();
         }
     }
 
@@ -56,7 +60,6 @@ public class AudioVisual extends Visual {
 
         // example.render();
         life.render();
-
     }
 
     public boolean detectBeat() {
@@ -70,7 +73,7 @@ public class AudioVisual extends Visual {
 
         for (int i = 0; i < ab.size(); i++) {
             if (abs(ab.get(i)) > threshold) {
-                return true;
+                return true;   
             }
         }
 

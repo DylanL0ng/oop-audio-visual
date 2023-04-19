@@ -66,7 +66,6 @@ public class LifeBoard {
                     } else {
                         next[row][col] = false;
                     }
-                    
                 }
             }
         }
@@ -75,6 +74,34 @@ public class LifeBoard {
         board = next;
         next = temp;
 
+    }
+
+    public void randomRules() {
+        // int randLimit1 = (int) p.random(3, 6);
+        // int randLimit2 = (int) p.random(3, 6);
+        int randLimit1 = 2;
+        int randLimit2 = 4;
+
+        randomlyRandom();
+
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                int count = countCells(row, col);
+                if (board[row][col] == true) {
+                    if (count >= 2 && count <= 4) {
+                        next[row][col] = true;
+                    } else {
+                        next[row][col] = false;
+                    }
+                } else {
+                    if (count == 3) {
+                        next[row][col] = true;
+                    } else {
+                        next[row][col] = false;
+                    }
+                }
+            }
+        }
     }
 
     public void randomise() {
@@ -104,26 +131,26 @@ public class LifeBoard {
          * Using values of 1 and size - 1 ensures the numbers are kept within the bounds of the array,
          * with respect to the loops which will access the indices before and after the random index.
          */
-        int rand1 = (int) p.random(1, size - 1);
-        int rand2 = (int) p.random(1, size - 1);
+        int rand1 = (int) p.random(5, size - 5);
+        int rand2 = (int) p.random(5, size - 5);
 
         
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                if (i != 0 || j != 0) {
+        for (int i = -2; i <= 2; i++) {
+            for (int j = -2; j <= 2; j++) {
                    board[rand1 + i][rand2 + j] = true;   
-                }
             } // end for
         } // end for 
         
     }
 
     public void render() {
+        int count = 0;
+        count++;
         // If the simulation is paused, the render() method won't run.
         if (!running) {
             return;
         } else if (p.detectBeat()) {
-            randomlyRandom();
+            randomRules();
         }
 
         // The background is set to zero within this method so that the simulation will just pause and not be cleared.
