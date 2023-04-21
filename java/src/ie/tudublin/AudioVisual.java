@@ -24,8 +24,9 @@ public class AudioVisual extends Visual {
          */
 
         example = new Audio1(ab, this);
+        System.out.println(frameSize / 8);
         life = new LifeBoard(frameSize / 8, ab, this);
-        life.randomise();
+        // life.randomise();
 
         ap.play();
         ap.skip((ap.length() / 2) + 35000);
@@ -58,7 +59,7 @@ public class AudioVisual extends Visual {
         life.render();
     }
 
-    public boolean detectBeat() {
+    public boolean detectVolume() {
         float sum = 0;
         for (int i = 0; i < ab.size(); i++) {
             sum += abs(ab.get(i));

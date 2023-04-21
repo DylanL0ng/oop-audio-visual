@@ -21,7 +21,7 @@ public class LifeBoard {
         next = new boolean[size][size];
         this.ab = ab;
         this.p = p;
-        cellWidth = p.width / (float)size;
+        cellWidth = p.width / (float) size;
         this.fft = new FFT(p.getFrameSize(), 44100);
     }
 
@@ -34,7 +34,7 @@ public class LifeBoard {
     }
 
     public int countCells(int row, int col) {
-        int count = 0; 
+        int count = 0;
 
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
@@ -44,7 +44,7 @@ public class LifeBoard {
                     }
                 }
             } // end for
-        } // end for 
+        } // end for
 
         return count;
     }
@@ -72,7 +72,7 @@ public class LifeBoard {
                 }
             }
         }
-        
+
         boolean[][] temp = board;
         board = next;
         next = temp;
@@ -105,9 +105,11 @@ public class LifeBoard {
     }
 
     public void randomise() {
-        /* This is here to recover from the clear() method. 
-         * When the clear() method is run, unless this if statement is here, the 
-         * randomise key will not work. After the board has been cleared, the user can press the 
+        /*
+         * This is here to recover from the clear() method.
+         * When the clear() method is run, unless this if statement is here, the
+         * randomise key will not work. After the board has been cleared, the user can
+         * press the
          * randomise key to unpause the game and randomise again.
          */
         if (!running) {
@@ -118,25 +120,27 @@ public class LifeBoard {
             for (int col = 0; col < size; col++) {
                 float dice = p.random(0, 1);
                 board[row][col] = (dice <= 0.5f);
-            } // end for 
-        } // end for 
+            } // end for
+        } // end for
     }
 
     public void surroundingCells(int row, int col) {
         if (!running) {
             pause();
         }
-        
-        /* 
-         * Using values of 1 and size - 1 ensures the numbers are kept within the bounds of the array,
-         * with respect to the loops which will access the indices before and after the random index.
+
+        /*
+         * Using values of 1 and size - 1 ensures the numbers are kept within the bounds
+         * of the array,
+         * with respect to the loops which will access the indices before and after the
+         * random index.
          */
         for (int i = -2; i <= 2; i++) {
             for (int j = -2; j <= 2; j++) {
-                   board[row + i][col + j] = true;   
+                board[row + i][col + j] = true;
             } // end for
-        } // end for 
-        
+        } // end for
+
     }
 
     public void render() {
@@ -145,9 +149,7 @@ public class LifeBoard {
         // If the simulation is paused, the render() method won't run.
         if (!running) {
             return;
-        } else if (p.detectBeat()) {
-            // setLifeGrid(30, 30);
-            // randomRules();
+        } else if (p.detectVolume()) {
             freq = getCurrentFrequency();
             drawFrequency(freq);
         }
@@ -155,12 +157,12 @@ public class LifeBoard {
         p.background(0);
         p.noStroke();
         applyRules();
-        
+
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 float x = col * cellWidth;
                 float y = row * cellWidth;
-                
+
                 if (board[row][col]) {
                     p.fill(colour * col, 255, 255);
                 } else {
@@ -171,7 +173,7 @@ public class LifeBoard {
         }
 
     }
-    
+
     public int getSize() {
         return size;
     }
@@ -187,7 +189,7 @@ public class LifeBoard {
 
     public void drawCross() {
         int mid = size / 2;
-        
+
         for (int i = mid - 20; i <= mid + 20; i++) {
             board[mid][i] = true;
             board[i][mid] = true;
@@ -195,10 +197,11 @@ public class LifeBoard {
     }
 
     public void setMouse() {
-        int col = (int)(p.mouseX / cellWidth);
-        int row = (int)(p.mouseY / cellWidth);
+        int col = (int) (p.mouseX / cellWidth);
+        int row = (int) (p.mouseY / cellWidth);
 
-        // If the mouse is within the bounds of the board, the corresponding element is set to be alive.
+        // If the mouse is within the bounds of the board, the corresponding element is
+        // set to be alive.
         if (row >= 0 && row < size && col >= 0 && col < size) {
             board[row][col] = true;
         }
@@ -209,10 +212,8 @@ public class LifeBoard {
         p.stroke(255);
 
         int highestIndex = 0;
-        for(int i = 0 ;i < fft.specSize() / 5 ; i ++)
-        {
-            if (fft.getBand(i) > fft.getBand(highestIndex))
-            {
+        for (int i = 0; i < fft.specSize() / 5; i++) {
+            if (fft.getBand(i) > fft.getBand(highestIndex)) {
                 highestIndex = i;
             }
         }
@@ -222,23 +223,38 @@ public class LifeBoard {
 
     public void drawFrequency(float freq) {
         float newFrequency = freq / 10;
+        int halfSize = size / 2;
 
-        int rand1 = (int) p.random(5, size - 5);
-        int rand2 = (int) p.random(5, size - 5);
+        int rand1, rand2;
 
         if (newFrequency <= 25) {
-            AudioVisual.map(rand1, 0, size, (size / 2) + (size / 4), size);
-            AudioVisual.map(rand2, 0, size, (size / 2) + (size / 4), size);
+            do {
+                rand1 = (int) p.random(5, size - 5);
+                rand2 = (int) p.random(5, size - 5);
+            } while (!((rand1 >= 0 && rand1 <= 20) || (rand1 >= size - 20 && rand1 <= size)) ||
+                    !((rand2 >= 0 && rand2 <= 20) || (rand2 >= size - 20 && rand2 <= size)));
+
+            System.out.println("low" + rand1 + " " + rand2);
             surroundingCells(rand1, rand2);
-        } 
-        System.out.println("low" + rand1 + " " + rand2);
+        }
 
         if (newFrequency > 25 && newFrequency <= 50) {
-            System.out.println("medium");
+            do {
+                rand1 = (int) p.random(20, halfSize - 20);
+                rand2 = (int) p.random(20, halfSize - 20);
+            } while (!(rand1 >= 20 && rand1 < halfSize - 20) || !(rand2 >= 20 && rand2 < halfSize - 20));
+
+            System.out.println("medium" + rand1 + " " + rand2);
+            surroundingCells(rand1, rand2);
         }
 
         if (newFrequency > 50) {
-            System.out.println("High");
+            do {
+                rand1 = (int) p.random(halfSize - 20, halfSize + 20);
+                rand2 = (int) p.random(halfSize - 20, halfSize + 20);
+            } while (!(rand1 >= halfSize - 20 && rand1 <= halfSize + 20) || !(rand2 >= halfSize - 20 && rand1 <= halfSize + 20));
+
+            System.out.println("high" + rand1 + " " + rand2);
         }
     }
 }
