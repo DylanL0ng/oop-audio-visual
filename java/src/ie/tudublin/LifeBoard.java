@@ -144,19 +144,21 @@ public class LifeBoard {
     }
 
     public void render() {
+        float colour = 255 / (float) size;
+        float freq;
         // If the simulation is paused, the render() method won't run.
         if (!running) {
             return;
         } else if (p.detectBeat()) {
             // setLifeGrid(30, 30);
             // randomRules();
+            freq = getCurrentFrequency();
+            drawFrequency(freq);
         }
 
-        // The background is set to zero within this method so that the simulation will just pause and not be cleared.
         p.background(0);
         p.noStroke();
         applyRules();
-        float cgap = 255 / (float) size;
         
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
@@ -164,18 +166,13 @@ public class LifeBoard {
                 float y = row * cellWidth;
                 
                 if (board[row][col]) {
-                    p.fill(cgap * col, 255, 255);
+                    p.fill(colour * col, 255, 255);
                 } else {
                     p.fill(0);
                 }
                 p.rect(x, y, cellWidth, cellWidth);
             }
         }
-
-        float freq = getCurrentFrequency();
-        p.fill(255);
-        p.textSize(20);
-        p.text("Freq: " + freq, 100, 100);
 
     }
     
@@ -211,29 +208,6 @@ public class LifeBoard {
         }
     }
 
-    public void setLifeGrid(int x, int y) {
-        // Set a grid of cells for the word 'life'
-        String[] life = {
-            "11000001111110011111100111111",
-            "11000001111110011111100111111",
-            "1100000001100001100000011",
-            "11000000011000011111100111111",
-            "11000000011000011111100111111",
-            "1100000001100001100000011",
-            "11111001111110011000000111111",
-            "11111001111110011000000111111"
-        };
-
-        // Set the cells in the board
-        for (int i = 0; i < life.length; i++) {
-            for (int j = 0; j < life[i].length(); j++) {
-                if (life[i].charAt(j) == '1') {
-                    board[x + i][y + j] = true;
-                }
-            }
-        }
-    }
-
     public float getCurrentFrequency() {
         fft.forward(ab);
         p.stroke(255);
@@ -248,5 +222,21 @@ public class LifeBoard {
         }
 
         return fft.indexToFreq(highestIndex);
+    }
+
+    public void drawFrequency(float freq) {
+        float newFrequency = freq / 10;
+
+        if (newFrequency <= 25) {
+            System.out.println("low");
+        } 
+
+        if (newFrequency > 25 && newFrequency <= 50) {
+            System.out.println("medium");
+        }
+
+        if (newFrequency > 50) {
+            System.out.println("High");
+        }
     }
 }

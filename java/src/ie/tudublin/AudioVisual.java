@@ -41,10 +41,6 @@ public class AudioVisual extends Visual {
                 ap.play();
             }
         } 
-
-        if (key == 'a') {
-            life.setLifeGrid(30, 30);
-        }
     }
 
     public void draw() {
