@@ -24,7 +24,7 @@ public class AudioVisual extends Visual {
          */
 
         example = new Audio1(ab, this);
-        life = new LifeBoard(frameSize / 10, ab, this);
+        life = new LifeBoard(frameSize / 8, ab, this);
         life.randomise();
 
         ap.play();

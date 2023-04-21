@@ -148,8 +148,8 @@ public class LifeBoard {
         if (!running) {
             return;
         } else if (p.detectBeat()) {
-            setLifeGrid(30, 30);
-            randomRules();
+            // setLifeGrid(30, 30);
+            // randomRules();
         }
 
         // The background is set to zero within this method so that the simulation will just pause and not be cleared.
@@ -171,24 +171,12 @@ public class LifeBoard {
                 p.rect(x, y, cellWidth, cellWidth);
             }
         }
-        setMouse();
 
-        fft.forward(ab);
-        p.stroke(255);
-
-        int highestIndex = 0;
-        for(int i = 0 ;i < fft.specSize() / 2 ; i ++)
-        {
-            if (fft.getBand(i) > fft.getBand(highestIndex))
-            {
-                highestIndex = i;
-            }
-        }
-
-        float freq = fft.indexToFreq(highestIndex);
+        float freq = getCurrentFrequency();
         p.fill(255);
         p.textSize(20);
         p.text("Freq: " + freq, 100, 100);
+
     }
     
     public int getSize() {
@@ -244,5 +232,21 @@ public class LifeBoard {
                 }
             }
         }
+    }
+
+    public float getCurrentFrequency() {
+        fft.forward(ab);
+        p.stroke(255);
+
+        int highestIndex = 0;
+        for(int i = 0 ;i < fft.specSize() / 5 ; i ++)
+        {
+            if (fft.getBand(i) > fft.getBand(highestIndex))
+            {
+                highestIndex = i;
+            }
+        }
+
+        return fft.indexToFreq(highestIndex);
     }
 }
