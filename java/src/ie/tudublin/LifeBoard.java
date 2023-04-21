@@ -82,7 +82,7 @@ public class LifeBoard {
     public void randomRules() {
         // int randLimit1 = (int) p.random(3, 6);
         // int randLimit2 = (int) p.random(3, 6);
-        randomlyRandom();
+        // surroundingCells();
 
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
@@ -122,7 +122,7 @@ public class LifeBoard {
         } // end for 
     }
 
-    public void randomlyRandom() {
+    public void surroundingCells(int row, int col) {
         if (!running) {
             pause();
         }
@@ -131,13 +131,9 @@ public class LifeBoard {
          * Using values of 1 and size - 1 ensures the numbers are kept within the bounds of the array,
          * with respect to the loops which will access the indices before and after the random index.
          */
-        int rand1 = (int) p.random(5, size - 5);
-        int rand2 = (int) p.random(5, size - 5);
-
-        
         for (int i = -2; i <= 2; i++) {
             for (int j = -2; j <= 2; j++) {
-                   board[rand1 + i][rand2 + j] = true;   
+                   board[row + i][col + j] = true;   
             } // end for
         } // end for 
         
@@ -227,9 +223,15 @@ public class LifeBoard {
     public void drawFrequency(float freq) {
         float newFrequency = freq / 10;
 
+        int rand1 = (int) p.random(5, size - 5);
+        int rand2 = (int) p.random(5, size - 5);
+
         if (newFrequency <= 25) {
-            System.out.println("low");
+            AudioVisual.map(rand1, 0, size, (size / 2) + (size / 4), size);
+            AudioVisual.map(rand2, 0, size, (size / 2) + (size / 4), size);
+            surroundingCells(rand1, rand2);
         } 
+        System.out.println("low" + rand1 + " " + rand2);
 
         if (newFrequency > 25 && newFrequency <= 50) {
             System.out.println("medium");
