@@ -1,6 +1,7 @@
 package ie.tudublin;
 
 import ddf.minim.AudioBuffer;
+import ddf.minim.analysis.FFT;
 
 public class LifeBoard {
     boolean[][] board;
@@ -10,6 +11,7 @@ public class LifeBoard {
     AudioVisual p;
     float cellWidth;
     boolean running = true;
+    FFT fft;
 
     boolean[][] creeper;
 
@@ -20,6 +22,7 @@ public class LifeBoard {
         this.ab = ab;
         this.p = p;
         cellWidth = p.width / (float)size;
+        this.fft = new FFT(p.getFrameSize(), 44100);
     }
 
     public boolean getCell(int row, int col) {
@@ -151,6 +154,7 @@ public class LifeBoard {
 
         // The background is set to zero within this method so that the simulation will just pause and not be cleared.
         p.background(0);
+        p.noStroke();
         applyRules();
         float cgap = 255 / (float) size;
         
@@ -168,6 +172,23 @@ public class LifeBoard {
             }
         }
         setMouse();
+
+        fft.forward(ab);
+        p.stroke(255);
+
+        int highestIndex = 0;
+        for(int i = 0 ;i < fft.specSize() / 2 ; i ++)
+        {
+            if (fft.getBand(i) > fft.getBand(highestIndex))
+            {
+                highestIndex = i;
+            }
+        }
+
+        float freq = fft.indexToFreq(highestIndex);
+        p.fill(255);
+        p.textSize(20);
+        p.text("Freq: " + freq, 100, 100);
     }
     
     public int getSize() {
