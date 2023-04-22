@@ -13,8 +13,10 @@ public class LifeBoard {
     boolean running = true;
     FFT fft;
 
-    boolean[][] creeper;
-
+    /* The constructor is passed the size of the board, the audio buffer and the AudioVisual instance p.
+     * Passing the audio buffer allows this class to analyse the audio buffer within its methods.
+     * The AudioVisual class is a subclass of Visual, which extends PApplet. This allows us to use 
+     * AudioVisual p to use methods from the PApplet class, and draw on the canvas. */
     public LifeBoard(int size, AudioBuffer ab, AudioVisual p) {
         this.size = size;
         board = new boolean[size][size];
@@ -79,50 +81,7 @@ public class LifeBoard {
 
     }
 
-    public void randomRules() {
-        // int randLimit1 = (int) p.random(3, 6);
-        // int randLimit2 = (int) p.random(3, 6);
-        // surroundingCells();
-
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                int count = countCells(row, col);
-                if (board[row][col] == true) {
-                    if (count >= 2 && count <= 4) {
-                        next[row][col] = true;
-                    } else {
-                        next[row][col] = false;
-                    }
-                } else {
-                    if (count == 3) {
-                        next[row][col] = true;
-                    } else {
-                        next[row][col] = false;
-                    }
-                }
-            }
-        }
-    }
-
     public void randomise(int row, int col) {
-        /*
-         * This is here to recover from the clear() method.
-         * When the clear() method is run, unless this if statement is here, the
-         * randomise key will not work. After the board has been cleared, the user can
-         * press the
-         * randomise key to unpause the game and randomise again.
-         */
-        if (!running) {
-            pause();
-        }
-
-        /* for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                float dice = p.random(0, 1);
-                board[row][col] = (dice <= 0.5f);
-            } // end for
-        } // end for */
-
         int shapeSelect = (int)p.random(0, 2);
 
         switch (shapeSelect) {
@@ -138,44 +97,44 @@ public class LifeBoard {
 
             case 2: {
                 drawX(row, col);
-                // randomRules();
                 break;
             }
         }
     }
 
     public void surroundingCells(int row, int col) {
+        // This method sets all cells surrounding a particular cell to be alive, inclusive.
         if (!running) {
             pause();
         }
 
-        /*
-         * Using values of 1 and size - 1 ensures the numbers are kept within the bounds
-         * of the array,
-         * with respect to the loops which will access the indices before and after the
-         * random index.
-         */
         for (int i = -2; i <= 2; i++) {
             for (int j = -2; j <= 2; j++) {
                 board[row + i][col + j] = true;
             } // end for
         } // end for
-
     }
 
     public void render() {
+        // This calculation ensures the colour spectrum correctly spans the size of the board.
         float colour = 255 / (float) size;
         float freq;
+
         // If the simulation is paused, the render() method won't run.
         if (!running) {
             return;
         } else if (detectVolume()) {
+            /* If a sharp change in volume is detected, this code runs. 
+             * detectVolume() is further explained at its definition. */
+
+            // Gets the frequency of the note currently playing.
             freq = getCurrentFrequency();
-            drawFrequency(freq);
+            // Draws on the board, based on the frequency found.
+            drawFrequency(freq); 
         }
 
         p.background(0);
-        p.noStroke();
+        p.noStroke(); // I think it looks cooler when the cells blend into one another, with no border.
         applyRules();
 
         for (int row = 0; row < size; row++) {
@@ -191,7 +150,6 @@ public class LifeBoard {
                 p.rect(x, y, cellWidth, cellWidth);
             }
         }
-
     }
 
     public boolean detectVolume() {
@@ -200,10 +158,14 @@ public class LifeBoard {
             sum += AudioVisual.abs(ab.get(i));
         }
 
+        // The average amplitude of the audio buffer.
         float average = sum / ab.size();
+        /* A threshold value based on the average amplitude. A lower multiplication value makes the detection more sensitive. 
+         * I found 3.75 to be a visually appealing sweetspot. */
         float threshold = (float) (3.75 * average);
 
         for (int i = 0; i < ab.size(); i++) {
+            // If the current note is above the threshold, the function returns true.
             if (AudioVisual.abs(ab.get(i)) > threshold) {
                 return true;   
             }
@@ -227,9 +189,16 @@ public class LifeBoard {
 
     public void drawCross(int row, int col) {
         int crossSize = (int)p.random(1, 10);
+        
+        /* The Math.max and Math.min values are both used here. This is to ensure that the method 
+         * does not attempt to change values which are out of bounds. 
+         * The loop starts at whichever value is higher between row - crossSize and 0, 
+         * and ends at whichever is smaller between row + crossSize and size - 1.
+         */
         for (int i = Math.max(row - crossSize, 0); i <= Math.min(row + crossSize, size - 1); i++) {
             board[i][col] = true;
         }
+        
         for (int j = Math.max(col - crossSize, 0); j <= Math.min(col + crossSize, size - 1); j++) {
             board[row][j] = true;
         }
@@ -238,9 +207,12 @@ public class LifeBoard {
     public void drawX(int row, int col) {
         int Xsize = (int)p.random(1, 10);
 
+        // Draw top-left to bottom-right diagonal line
         for (int i = 0; i < Xsize; i++) {
             int r = row + i;
             int c = col + i;
+
+            // The shape is only drawn if the points found are within the bounds of the array.
             if (r < p.height && c < p.width) {
                 board[r][c] = true;
             }
@@ -250,6 +222,8 @@ public class LifeBoard {
         for (int i = 0; i < Xsize; i++) {
             int r = row + i;
             int c = col - i;
+
+            // The shape is only drawn if the points found are within the bounds of the array.
             if (r < p.height && c >= 0) {
                 board[r][c] = true;
             }
@@ -261,18 +235,19 @@ public class LifeBoard {
         int col = (int) (p.mouseX / cellWidth);
         int row = (int) (p.mouseY / cellWidth);
 
-        // If the mouse is within the bounds of the board, the corresponding element is
-        // set to be alive.
+        /* If the mouse is within the bounds of the board, the corresponding element is
+         * set to be alive. */
         if (row >= 0 && row < size && col >= 0 && col < size) {
             board[row][col] = true;
         }
     }
 
     public float getCurrentFrequency() {
-        fft.forward(ab);
-        p.stroke(255);
-
+        /* This function goes through the frequencies within the audio buffer,
+         * and returns the highest frequency currently playing. */
         int highestIndex = 0;
+        fft.forward(ab);
+
         for (int i = 0; i < fft.specSize() / 5; i++) {
             if (fft.getBand(i) > fft.getBand(highestIndex)) {
                 highestIndex = i;
@@ -283,47 +258,51 @@ public class LifeBoard {
     }
 
     public void drawFrequency(float freq) {
-        float newFrequency = freq / 10;
+        float newFrequency = freq / 10; // Divided for simplicity purposes
         int halfSize = size / 2;
         int offset = 30;
 
         int rand1, rand2;
 
-        // Less than or equal to 250Hz
-        if (newFrequency <= 25) {
-            System.out.println("low");
+        // Less than or equal to 300Hz
+        if (newFrequency <= 30) {
+            /* When the song is playing at a low frequency, shapes are generated around the outside of the board.
+             * The loop runs until coordinates are generated that are within the outside x cells of the board,
+             * on all axes. The offset of these cells is stored within the variable 'offset'. */
             do {
                 rand1 = (int) p.random(5, size - 5);
                 rand2 = (int) p.random(5, size - 5);
             } while ((!((rand1 >= 0 && rand1 <= offset) || (rand1 <= size - offset && rand1 >= size))) &&
                      (!((rand2 >= 0 && rand2 <= offset) || (rand2 <= size - offset && rand2 >= size))));
 
-            System.out.println("low" + rand1 + " " + rand2);
             randomise(rand1, rand2);
         }
 
-        // Between 251 and 500 Hz
-        if (newFrequency > 25 && newFrequency <= 50) {
-            System.out.println("mid");
+        // Between 301 and 600 Hz
+        if (newFrequency > 30 && newFrequency <= 60) {
+            /* When the song is playing at a medium frequency, shapes are generated between the outside cells 
+             * and the middle of the board on all axes. The loop runs until the coordinates generated 
+             * satisfy these criteria. */
             do {
-                rand1 = (int) p.random(5, size - 5);
-                rand2 = (int) p.random(5, size - 5);
+                rand1 = (int) p.random(offset, size - offset);
+                rand2 = (int) p.random(offset, size - offset);
             } while ((!(rand1 > offset && rand1 < halfSize - offset) || (rand1 < halfSize + offset && rand1 > size - offset)) &&
                      (!(rand2 > offset && rand2 < halfSize - offset) || (rand2 < halfSize + offset && rand2 > size - offset)));
 
-            System.out.println("medium" + rand1 + " " + rand2);
             randomise(rand1, rand2);
         }
 
-        // Over 500 Hz
-        if (newFrequency > 50) {
-            System.out.println("high");
+        /* Over 600 Hz is counted as high frequency. 
+         * Usually in music theory, 'high' frequency is considered to be 2kHz or over,
+         * but in this song, most higher instruments lie around 900-1500 Hz. */
+        if (newFrequency > 60) {
+            /* When the song is playing at a high frequency, shapes are generated within the middle of the board,
+             * plus or minus 'offset' cells. The loop runs until the coordinates generated meet these criteria. */
             do {
                 rand1 = (int) p.random(halfSize - offset, halfSize + offset);
                 rand2 = (int) p.random(halfSize - offset, halfSize + offset);
             } while (!(rand1 >= halfSize - offset && rand1 <= halfSize + offset) && !(rand2 >= halfSize - offset && rand1 <= halfSize + offset));
 
-            System.out.println("high" + rand1 + " " + rand2);
             randomise(rand1, rand2);
         }
     }
