@@ -149,7 +149,7 @@ public class LifeBoard {
         // If the simulation is paused, the render() method won't run.
         if (!running) {
             return;
-        } else if (p.detectVolume()) {
+        } else if (detectVolume()) {
             freq = getCurrentFrequency();
             drawFrequency(freq);
         }
@@ -172,6 +172,24 @@ public class LifeBoard {
             }
         }
 
+    }
+
+    public boolean detectVolume() {
+        float sum = 0;
+        for (int i = 0; i < ab.size(); i++) {
+            sum += AudioVisual.abs(ab.get(i));
+        }
+
+        float average = sum / ab.size();
+        float threshold = (float) (4 * average);
+
+        for (int i = 0; i < ab.size(); i++) {
+            if (AudioVisual.abs(ab.get(i)) > threshold) {
+                return true;   
+            }
+        }
+
+        return false;
     }
 
     public int getSize() {

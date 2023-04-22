@@ -24,7 +24,6 @@ public class AudioVisual extends Visual {
          */
 
         example = new Audio1(ab, this);
-        System.out.println(frameSize / 8);
         life = new LifeBoard(frameSize / 8, ab, this);
         // life.randomise();
 
@@ -57,23 +56,5 @@ public class AudioVisual extends Visual {
 
         // example.render();
         life.render();
-    }
-
-    public boolean detectVolume() {
-        float sum = 0;
-        for (int i = 0; i < ab.size(); i++) {
-            sum += abs(ab.get(i));
-        }
-
-        float average = sum / ab.size();
-        float threshold = (float) (4 * average);
-
-        for (int i = 0; i < ab.size(); i++) {
-            if (abs(ab.get(i)) > threshold) {
-                return true;   
-            }
-        }
-
-        return false;
     }
 }
