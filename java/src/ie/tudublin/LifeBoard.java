@@ -137,7 +137,8 @@ public class LifeBoard {
             }
 
             case 2: {
-                randomRules();
+                drawX(row, col);
+                // randomRules();
                 break;
             }
         }
@@ -231,6 +232,27 @@ public class LifeBoard {
         }
         for (int j = Math.max(col - crossSize, 0); j <= Math.min(col + crossSize, size - 1); j++) {
             board[row][j] = true;
+        }
+    }
+
+    public void drawX(int row, int col) {
+        int Xsize = (int)p.random(1, 10);
+
+        for (int i = 0; i < Xsize; i++) {
+            int r = row + i;
+            int c = col + i;
+            if (r < p.height && c < p.width) {
+                board[r][c] = true;
+            }
+        }
+        
+        // Draw top-right to bottom-left diagonal line
+        for (int i = 0; i < Xsize; i++) {
+            int r = row + i;
+            int c = col - i;
+            if (r < p.height && c >= 0) {
+                board[r][c] = true;
+            }
         }
     }
     
