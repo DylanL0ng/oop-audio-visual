@@ -104,7 +104,7 @@ public class LifeBoard {
         }
     }
 
-    public void randomise() {
+    public void randomise(int row, int col) {
         /*
          * This is here to recover from the clear() method.
          * When the clear() method is run, unless this if statement is here, the
@@ -116,12 +116,31 @@ public class LifeBoard {
             pause();
         }
 
-        for (int row = 0; row < size; row++) {
+        /* for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 float dice = p.random(0, 1);
                 board[row][col] = (dice <= 0.5f);
             } // end for
-        } // end for
+        } // end for */
+
+        int shapeSelect = (int)p.random(0, 2);
+
+        switch (shapeSelect) {
+            case 0: {
+                surroundingCells(row, col);
+                break;
+            }
+
+            case 1: {
+                drawCross(row, col);
+                break;
+            }
+
+            case 2: {
+                randomRules();
+                break;
+            }
+        }
     }
 
     public void surroundingCells(int row, int col) {
@@ -181,7 +200,7 @@ public class LifeBoard {
         }
 
         float average = sum / ab.size();
-        float threshold = (float) (4 * average);
+        float threshold = (float) (3.75 * average);
 
         for (int i = 0; i < ab.size(); i++) {
             if (AudioVisual.abs(ab.get(i)) > threshold) {
@@ -205,14 +224,16 @@ public class LifeBoard {
         p.background(0);
     }
 
-    public void drawCross() {
-        int mid = size / 2;
-
-        for (int i = mid - 20; i <= mid + 20; i++) {
-            board[mid][i] = true;
-            board[i][mid] = true;
+    public void drawCross(int row, int col) {
+        int crossSize = (int)p.random(1, 10);
+        for (int i = Math.max(row - crossSize, 0); i <= Math.min(row + crossSize, size - 1); i++) {
+            board[i][col] = true;
+        }
+        for (int j = Math.max(col - crossSize, 0); j <= Math.min(col + crossSize, size - 1); j++) {
+            board[row][j] = true;
         }
     }
+    
 
     public void setMouse() {
         int col = (int) (p.mouseX / cellWidth);
@@ -242,42 +263,46 @@ public class LifeBoard {
     public void drawFrequency(float freq) {
         float newFrequency = freq / 10;
         int halfSize = size / 2;
-        int offset = 20;
+        int offset = 30;
 
         int rand1, rand2;
 
         // Less than or equal to 250Hz
         if (newFrequency <= 25) {
+            System.out.println("low");
             do {
                 rand1 = (int) p.random(5, size - 5);
                 rand2 = (int) p.random(5, size - 5);
-            } while (!((rand1 >= 0 && rand1 <= offset) || (rand1 >= size - offset && rand1 <= size)) ||
-                     !((rand2 >= 0 && rand2 <= offset) || (rand2 >= size - offset && rand2 <= size)));
+            } while ((!((rand1 >= 0 && rand1 <= offset) || (rand1 <= size - offset && rand1 >= size))) &&
+                     (!((rand2 >= 0 && rand2 <= offset) || (rand2 <= size - offset && rand2 >= size))));
 
             System.out.println("low" + rand1 + " " + rand2);
-            surroundingCells(rand1, rand2);
+            randomise(rand1, rand2);
         }
 
         // Between 251 and 500 Hz
         if (newFrequency > 25 && newFrequency <= 50) {
+            System.out.println("mid");
             do {
-                rand1 = (int) p.random(offset, halfSize + offset);
-                rand2 = (int) p.random(offset, halfSize + offset);
-            } while (!(rand1 >= offset && rand1 < halfSize - offset) || (rand1 >= halfSize + offset && rand1 <= size - 40) ||
-                     !(rand2 >= offset && rand2 < halfSize - offset) || (rand2 >= halfSize + offset && rand1 <= size - 40));
+                rand1 = (int) p.random(5, size - 5);
+                rand2 = (int) p.random(5, size - 5);
+            } while ((!(rand1 > offset && rand1 < halfSize - offset) || (rand1 < halfSize + offset && rand1 > size - offset)) &&
+                     (!(rand2 > offset && rand2 < halfSize - offset) || (rand2 < halfSize + offset && rand2 > size - offset)));
 
             System.out.println("medium" + rand1 + " " + rand2);
-            surroundingCells(rand1, rand2);
+            randomise(rand1, rand2);
         }
 
         // Over 500 Hz
         if (newFrequency > 50) {
+            System.out.println("high");
             do {
                 rand1 = (int) p.random(halfSize - offset, halfSize + offset);
                 rand2 = (int) p.random(halfSize - offset, halfSize + offset);
-            } while (!(rand1 >= halfSize - offset && rand1 <= halfSize + offset) || !(rand2 >= halfSize - offset && rand1 <= halfSize + offset));
+            } while (!(rand1 >= halfSize - offset && rand1 <= halfSize + offset) && !(rand2 >= halfSize - offset && rand1 <= halfSize + offset));
 
             System.out.println("high" + rand1 + " " + rand2);
+            randomise(rand1, rand2);
         }
     }
 }
