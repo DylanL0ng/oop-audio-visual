@@ -224,35 +224,40 @@ public class LifeBoard {
     public void drawFrequency(float freq) {
         float newFrequency = freq / 10;
         int halfSize = size / 2;
+        int offset = 20;
 
         int rand1, rand2;
 
+        // Less than or equal to 250Hz
         if (newFrequency <= 25) {
             do {
                 rand1 = (int) p.random(5, size - 5);
                 rand2 = (int) p.random(5, size - 5);
-            } while (!((rand1 >= 0 && rand1 <= 20) || (rand1 >= size - 20 && rand1 <= size)) ||
-                    !((rand2 >= 0 && rand2 <= 20) || (rand2 >= size - 20 && rand2 <= size)));
+            } while (!((rand1 >= 0 && rand1 <= offset) || (rand1 >= size - offset && rand1 <= size)) ||
+                     !((rand2 >= 0 && rand2 <= offset) || (rand2 >= size - offset && rand2 <= size)));
 
             System.out.println("low" + rand1 + " " + rand2);
             surroundingCells(rand1, rand2);
         }
 
+        // Between 251 and 500 Hz
         if (newFrequency > 25 && newFrequency <= 50) {
             do {
-                rand1 = (int) p.random(20, halfSize - 20);
-                rand2 = (int) p.random(20, halfSize - 20);
-            } while (!(rand1 >= 20 && rand1 < halfSize - 20) || !(rand2 >= 20 && rand2 < halfSize - 20));
+                rand1 = (int) p.random(offset, halfSize + offset);
+                rand2 = (int) p.random(offset, halfSize + offset);
+            } while (!(rand1 >= offset && rand1 < halfSize - offset) || (rand1 >= halfSize + offset && rand1 <= size - 40) ||
+                     !(rand2 >= offset && rand2 < halfSize - offset) || (rand2 >= halfSize + offset && rand1 <= size - 40));
 
             System.out.println("medium" + rand1 + " " + rand2);
             surroundingCells(rand1, rand2);
         }
 
+        // Over 500 Hz
         if (newFrequency > 50) {
             do {
-                rand1 = (int) p.random(halfSize - 20, halfSize + 20);
-                rand2 = (int) p.random(halfSize - 20, halfSize + 20);
-            } while (!(rand1 >= halfSize - 20 && rand1 <= halfSize + 20) || !(rand2 >= halfSize - 20 && rand1 <= halfSize + 20));
+                rand1 = (int) p.random(halfSize - offset, halfSize + offset);
+                rand2 = (int) p.random(halfSize - offset, halfSize + offset);
+            } while (!(rand1 >= halfSize - offset && rand1 <= halfSize + offset) || !(rand2 >= halfSize - offset && rand1 <= halfSize + offset));
 
             System.out.println("high" + rand1 + " " + rand2);
         }
