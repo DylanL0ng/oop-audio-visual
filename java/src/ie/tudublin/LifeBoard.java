@@ -182,11 +182,6 @@ public class LifeBoard {
         running = !running;
     }
 
-    public void clear() {
-        pause();
-        p.background(0);
-    }
-
     public void drawCross(int row, int col) {
         int crossSize = (int)p.random(1, 10);
         
@@ -227,18 +222,6 @@ public class LifeBoard {
             if (r < p.height && c >= 0) {
                 board[r][c] = true;
             }
-        }
-    }
-    
-
-    public void setMouse() {
-        int col = (int) (p.mouseX / cellWidth);
-        int row = (int) (p.mouseY / cellWidth);
-
-        /* If the mouse is within the bounds of the board, the corresponding element is
-         * set to be alive. */
-        if (row >= 0 && row < size && col >= 0 && col < size) {
-            board[row][col] = true;
         }
     }
 
