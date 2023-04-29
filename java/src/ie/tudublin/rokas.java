@@ -17,14 +17,14 @@ public class rokas extends Visual {
     float cx = frameSize / 2;
     float cy = frameSize / 2;
 
-
-
     float lerpedBuffer[] = new float[1024];
     float sum;
     float average;
 
+
     public void render() 
     {
+
         p.background(0);
 
         for(int i = 0 ; i < ab.size() ; i ++)
@@ -47,7 +47,7 @@ public class rokas extends Visual {
     public void drawSqTower(float count, int pos, float c)
     {
         // square size adjustment
-        int size = 10;
+        int size = 8;
 
         // rounding off inputs so they 'snap' to grid
         int sqCount = Math.round(count / 2.0f) * 2;
@@ -72,7 +72,8 @@ public class rokas extends Visual {
             {
                 // halfway and up 
                 p.fill(c, 255, 255 - (10 * i));
-            }
+
+            } // end if
         
             // draw square
             p.rect(xpos, ypos, size, size);
