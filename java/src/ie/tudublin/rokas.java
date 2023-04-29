@@ -47,7 +47,7 @@ public class rokas extends Visual {
     public void drawSqTower(float count, int pos, float c)
     {
         // square size adjustment
-        int size = 8;
+        int size = 4;
 
         // rounding off inputs so they 'snap' to grid
         int sqCount = Math.round(count / 2.0f) * 2;
@@ -67,6 +67,8 @@ public class rokas extends Visual {
             {
                 // halfway or below
                 p.fill(c, 255, 20 * i);
+
+                //p.fill(0, 0, 0);
             }
             else
             {
