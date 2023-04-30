@@ -38,7 +38,7 @@ public class martin extends Visual
         {
             shapes = new ArrayList<>();
             //creates 5 cube, 5 lines, random position
-            for (int i = 0; i < 10; i++) 
+            for (int i = 0; i < 50; i++) 
             {
                 shapes.add(new CubeShape(p, new PVector(p.random(p.width), p.random(p.height), p.random(-500, 500))));
                 shapes.add(new LineShape(p, new PVector(p.random(p.width), p.random(p.height))));
@@ -54,6 +54,12 @@ public class martin extends Visual
     }
     
 }
+
+//maybe something minecraft related? - Different Cubes?
+//Rotating Cubes based on music
+//Different ways to interact with render
+//Colour changes, Different implementation of shapes
+//Background??
 
 //template for different kinds of shapes
 abstract class Shape 
