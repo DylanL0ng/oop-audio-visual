@@ -3,9 +3,10 @@ package ie.tudublin;
 public class AudioVisual extends Visual {
 
     Audio1 example;
+    martin martin;
 
     public void settings() {
-        size(1024, 800);
+        size(1024, 800, P3D);
     }
 
     public void setup() {
@@ -22,6 +23,7 @@ public class AudioVisual extends Visual {
          * e.g rokas = new Rokas(x, y, z, this)
          */
 
+        martin = new martin(ab, this);
         example = new Audio1(ab, this);
 
         ap.play();
@@ -48,7 +50,7 @@ public class AudioVisual extends Visual {
          * 
          * rokas.render();
          */
-
-        example.render();
+        martin.render();
+        //example.render();
     }
 }
