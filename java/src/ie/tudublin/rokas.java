@@ -14,36 +14,31 @@ public class rokas extends Visual {
     AudioBuffer ab;
     PApplet p;
 
-    float cx = frameSize / 2;
-    float cy = frameSize / 2;
-
+    float cy = (frameSize / 2) - 80;
     float lerpedBuffer[] = new float[1024];
-    float sum;
-    float average;
 
 
     public void render() 
     {
-
         p.background(0);
 
         for(int i = 0 ; i < ab.size() ; i ++)
         {
-            sum += PApplet.abs(ab.get(i));
             lerpedBuffer[i] = PApplet.lerp(lerpedBuffer[i], ab.get(i), 0.1f);
-        }
-        average = sum / (float) ab.size();
 
+        } // end for
 
-        p.background(0);
+        // loop for generating oldschool-esque pixelated waveform
         for(int i = 0 ; i < ab.size() ; i ++)
         {
             float c = map(i, 0, ab.size(), 0, 255);
             float f = lerpedBuffer[i] * cy * 5f;
-            drawSqTower(f, i, c);       
-        }
+            drawSqTower(f, i, c);     
+
+        } // end for
     }
 
+    // method for generating a tower of squares based on a frequency
     public void drawSqTower(float count, int pos, float c)
     {
         // square size adjustment
@@ -57,28 +52,29 @@ public class rokas extends Visual {
         for(int i = 1 ; i <= sqCount ; i++)
         {
             // square y position offset for towers
-            float ypos = (cy - (size * i) + ((sqCount + 1) * (size / 2)));
+            float ypos = (cy - (size * i)); // top
+            float ypos2 = (cy + (size * i)); // bottom
+            
 
             p.rectMode(CENTER);
-            p.noStroke();
+            p.stroke(0,0,0);
 
             // gradient effect
             if(i <= sqCount / 2)
             {
-                // halfway or below
-                p.fill(c, 255, 20 * i);
-
-                //p.fill(0, 0, 0);
+                // inner waveform
+                p.fill(c, 255, 255);
             }
             else
             {
-                // halfway and up 
+                // outer waveform (gradient)
                 p.fill(c, 255, 255 - (10 * i));
 
             } // end if
         
             // draw square
             p.rect(xpos, ypos, size, size);
+            p.rect(xpos, ypos2 - 4, size, size);
 
         } // end for
 
