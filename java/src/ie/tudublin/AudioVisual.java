@@ -59,12 +59,12 @@ public class AudioVisual extends Visual {
 
         if (seconds <= 22) {
             // song fades in 
-            life.render();
+            rokas.render();
         } 
-
+        
         if (seconds > 22 && seconds <= 48) {
             // higher instrument introduced
-            rokas.render();
+            life.render();
         }
 
         if (seconds > 48 && seconds <= 79) {
