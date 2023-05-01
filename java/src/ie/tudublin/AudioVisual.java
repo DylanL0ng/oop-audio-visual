@@ -2,12 +2,14 @@ package ie.tudublin;
 
 public class AudioVisual extends Visual {
 
-    Audio1 example;
+    // Audio1 example;
     LifeBoard life;
     
     // song is 310 seconds long
     int seconds = 0;
     rokas rokas;
+
+    dylan dylan;
 
     public void settings() {
         size(1024, 800);
@@ -19,7 +21,7 @@ public class AudioVisual extends Visual {
         background(0);
 
         startMinim();
-        loadAudio("data/aria_math.mp3");
+        loadAudio("OOP-Project/data/aria_math.mp3");
         
         smooth();
         /*
@@ -29,6 +31,7 @@ public class AudioVisual extends Visual {
 
         life = new LifeBoard(frameSize / 8, ab, this);
         rokas = new rokas(ab, this);
+        dylan = new dylan(ab, this);
 
         ap.play();
 
@@ -46,7 +49,8 @@ public class AudioVisual extends Visual {
     }
 
     public void draw() {
-
+        dylan.render();
+        // return;
         /*
          * Make a method such as render() in your own class, which can be called from
          * this method.
@@ -56,45 +60,45 @@ public class AudioVisual extends Visual {
          * rokas.render();
          */
 
-        time();
+        // time();
 
-        if (seconds <= 22) {
-            // song fades in 
-            rokas.render();
-        } 
+        // if (seconds <= 22) {
+        //     // song fades in 
+        //     rokas.render();
+        // } 
         
-        if (seconds > 22 && seconds <= 48) {
-            // higher instrument introduced
-            life.render();
-        }
+        // if (seconds > 22 && seconds <= 48) {
+        //     // higher instrument introduced
+        //     life.render();
+        // }
 
-        if (seconds > 48 && seconds <= 79) {
-            // interesting instrument change here
-        }
+        // if (seconds > 48 && seconds <= 79) {
+        //     // interesting instrument change here
+        // }
 
-        if (seconds > 79 && seconds <= 109) {
-            // interesting instrument change here
-        }
+        // if (seconds > 79 && seconds <= 109) {
+        //     // interesting instrument change here
+        // }
 
-        if (seconds > 109 && seconds <= 150) {
-            // instruments slow down and go quiet here
-        }
+        // if (seconds > 109 && seconds <= 150) {
+        //     // instruments slow down and go quiet here
+        // }
 
-        if (seconds > 150 && seconds <= 193) {
-            // instruments get very loud here
-        }
+        // if (seconds > 150 && seconds <= 193) {
+        //     // instruments get very loud here
+        // }
 
-        if (seconds > 193 && seconds <= 216) {
-            // strong bass here
-        }
+        // if (seconds > 193 && seconds <= 216) {
+        //     // strong bass here
+        // }
 
-        if (seconds > 216 && seconds <= 262) {
-            // orchestra instruments here
-        }
+        // if (seconds > 216 && seconds <= 262) {
+        //     // orchestra instruments here
+        // }
 
-        if (seconds > 262 && seconds <= 285) {
-            // instruments dying, song fades
-        }
+        // if (seconds > 262 && seconds <= 285) {
+        //     // instruments dying, song fades
+        // }
     }
 
     public void time() {
