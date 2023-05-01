@@ -20,6 +20,15 @@ public class martin extends Visual
     float average;
     ArrayList<Shape> shapes;
 
+    //Different music zones 
+    float Low = (float) 0.03;  
+    float Mid = (float) 0.125; 
+    float High = (float) 0.20;
+
+    //calculate sum of audio buffer for each music zone 
+    float[] sums = new float[3];
+    float[] averages = new float[3];
+
     public void render() 
     {
         p.background(0);
@@ -33,24 +42,54 @@ public class martin extends Visual
         }
         average = sum / (float) ab.size();
 
+        //Calculate sums and average for each music zone
+        for (int i = 0; i < ab.size(); i++) 
+        {
+            int zone = getFrequencyZone(i);
+            sums[zone] += PApplet.abs(ab.get(i));
+            lerpedBuffer[i] = PApplet.lerp(lerpedBuffer[i], ab.get(i), 0.01f);
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            averages[i] = sums[i] / (float) ab.size();
+        }
+
         //if shapes null - create them
         if (shapes == null) 
         {
             shapes = new ArrayList<>();
             //creates 5 cube, 5 lines, random position
-            for (int i = 0; i < 50; i++) 
+            for (int i = 0; i < 10; i++) 
             {
                 shapes.add(new CubeShape(p, new PVector(p.random(p.width), p.random(p.height), p.random(-500, 500))));
-                shapes.add(new LineShape(p, new PVector(p.random(p.width), p.random(p.height))));
             }
+            shapes.add(new LineShape(p, new PVector(0,0)));
+            shapes.add(new LineShape(p, new PVector(1024,0)));
+            shapes.add(new LineShape(p, new PVector(0,800)));
+            shapes.add(new LineShape(p, new PVector(1024,800)));
+
+            //fractals
+            //shapes.add(new FractalShape(p));
+
         }
     
-        //calls update and display
+        //calls update and display with selected music zone
         for (Shape shape : shapes) 
         {
-            shape.update(average);
-            shape.display(average); 
+            int zone = 0; 
+            shape.update(averages[zone]);
+            shape.display(averages[zone]); 
         }
+    }
+
+    //determine music zone for given index
+    private int getFrequencyZone(int index)
+    {
+        float frequency = p.map(index, 0, ab.size(), 20, 20000);
+        if (frequency < 300) return 0; // Bass
+        if (frequency < 5000) return 1; // Mid
+        return 2; // Treble
     }
     
 }
@@ -68,6 +107,8 @@ abstract class Shape
     //average to modify shape
     float average;
 
+
+
     Shape(PApplet p) 
     {
         this.p = p;
@@ -84,6 +125,8 @@ class CubeShape extends Shape
 {
     PVector pos, speed;
     float size;
+    //cube rotation
+    float rotation = 0;
 
     CubeShape(PApplet p, PVector pos) 
     {
@@ -93,14 +136,16 @@ class CubeShape extends Shape
         this.size = p.random(20, 50);
     }
 
-    //checks if cube gone outside screen, reverse direction
     void update(float average) 
     {
         pos.add(speed);
+        //checks if cube gone outside screen, reverse direction
         if (pos.x < 0 || pos.x > p.width || pos.y < 0 || pos.y > p.height || pos.z < -500 || pos.z > 500) 
         {
             speed.mult(-1);
         }
+        rotation += PApplet.map(average, 0, 1, 0.001f, 0.01f); // Control rotation with mouse position
+ 
     }
 
     void display(float average) 
@@ -109,22 +154,27 @@ class CubeShape extends Shape
         p.pushMatrix();
         p.translate(pos.x, pos.y, pos.z);
         //fix
-        p.fill(p.lerpColor(p.color(0, 0, 255), p.color(255, 0, 255), average * 10));
+        //cube rotation
+        p.rotateX(rotation);
+        p.rotateY(rotation);
+        p.rotateZ(rotation);
+        p.fill(p.lerpColor(p.color(240, 100, 100), p.color(300, 100, 100), average * 10));
         p.box(size + average * 200);
         p.popMatrix();
+
     }
 }
 
 class LineShape extends Shape 
 {
     PVector pos, target;
-
     LineShape(PApplet p, PVector pos) 
     {
         super(p);
         this.pos = pos;
         //setting target to centre screen 
         this.target = new PVector(p.width / 2, p.height / 2);
+    
     }
 
     //end point of the line to follow mouse cursor (testing - code is interactive)
@@ -140,7 +190,7 @@ class LineShape extends Shape
         //strokeweight proportional to average - changed based on average
         p.strokeWeight(average * 50);
         //fix
-        p.stroke(p.lerpColor(p.color(0, 255, 0), p.color(0, 255, 255), average * 10));
+        p.stroke(p.lerpColor(p.color(120, 100, 100), p.color(180, 100, 100), average * 10));
         p.line(pos.x, pos.y, target.x, target.y);
     }
 }
