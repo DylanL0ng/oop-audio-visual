@@ -6,6 +6,7 @@ public class AudioVisual extends Visual {
     LifeBoard life;
     // song is 310 seconds long
     int seconds = 0;
+    rokas rokas;
 
     public void settings() {
         size(1024, 800);
@@ -17,7 +18,7 @@ public class AudioVisual extends Visual {
         background(0);
 
         startMinim();
-        loadAudio("java/data/aria_math.mp3");
+        loadAudio("data/aria_math.mp3");
         
         smooth();
         /*
@@ -26,6 +27,7 @@ public class AudioVisual extends Visual {
          */
 
         life = new LifeBoard(frameSize / 8, ab, this);
+        rokas = new rokas(ab, this);
 
         ap.play();
 
@@ -62,6 +64,7 @@ public class AudioVisual extends Visual {
 
         if (seconds > 22 && seconds <= 48) {
             // higher instrument introduced
+            rokas.render();
         }
 
         if (seconds > 48 && seconds <= 79) {
