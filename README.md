@@ -53,7 +53,7 @@ Dylan:
 | Class/asset | Source |
 |-----------|-----------|
 | LifeBoard.java | Heavily Modified from [here](https://github.com/skooter500/OOP-2023/tree/game_of_life_fixed) |
-| rokas.java | etc |
+| rokas.java | Mostly self written, some modified code form [here](https://github.com/skooter500/OOP-2023/tree/audio1) |
 | martin.java | etc |
 | dylan.java | etc |
 
