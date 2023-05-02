@@ -157,7 +157,7 @@ public class AudioVisual extends Visual {
                 break;
 
             case 4:
-                // martin.render();
+                martin.render();
                 break;
         }
 
