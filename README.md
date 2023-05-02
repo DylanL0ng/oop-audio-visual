@@ -20,7 +20,7 @@ Class Group: TU856
 
 Name: Dylan Hussain
 
-Student Number: 
+Student Number: C21331063
 
 Class Group: TU856
 
@@ -47,7 +47,7 @@ Rokas: My scene is an homage to the oldschool audio visualisers. Initially, a ra
 
 Martin:
 
-Dylan:
+Dylan: My scene initially started out with the aim to reproduce something similar to the old playstation visualizers but as I started to work on it I started to drift away from that and produce something more unique and awesome looking. In the center we have a green circle, which reacts to the audio amplitude by chaning its size and brightness depending on the amplitude. In the background we have particles that float around the circle coloured in a rainbow, these particles move around the screen in unique motions, forming a tunnel silhouette. As the program goes on the offset for the particles increases gradually.
 
 # List of classes/assets 
 | Class/asset | Source |
@@ -55,7 +55,7 @@ Dylan:
 | LifeBoard.java | Heavily Modified from [here](https://github.com/skooter500/OOP-2023/tree/game_of_life_fixed) |
 | rokas.java | Mostly self written, some modified code form [here](https://github.com/skooter500/OOP-2023/tree/audio1) |
 | martin.java | etc |
-| dylan.java | etc |
+| dylan.java | BackgroundFiller.java | InnerCircle.java |
 
 # What we are most proud of in the assignment
 
@@ -65,7 +65,7 @@ Rokas: The song selection brought about a wave of nostalgia for me, as it was fr
 
 Martin: 
 
-Dylan: 
+Dylan: I was pretty amazed by how little code could generate such unique looking patterns and mesmerising images, it reminded me of the playstation visualiser which is what I was going for initially. I found myself watching the showcase over and over a few times following particles around the screen and seeing where they go. It really reminded me of my trip to Amsterdam recently, the music mixed with the visuals brought back a lot of great and fun memories there. It's definitely something I'll be happy to showcase on my GitHub and I've learned that coding doesn't always have to be binary it can invoke a sense of creativity and this project definitely helped to bring that creativity out of me.
 
 # References
 [Processing Documentation](https://processing.org/reference/)
