@@ -116,6 +116,7 @@ public class LifeBoard {
     }
 
     public void render() {
+        p.pushStyle();
         // This calculation ensures the colour spectrum correctly spans the size of the board.
         float colour = 255 / (float) size;
         float freq;
@@ -150,6 +151,8 @@ public class LifeBoard {
                 p.rect(x, y, cellWidth, cellWidth);
             }
         }
+
+        p.popStyle();
     }
 
     public boolean detectVolume() {

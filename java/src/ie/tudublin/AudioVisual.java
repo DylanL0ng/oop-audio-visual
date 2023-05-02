@@ -33,6 +33,8 @@ public class AudioVisual extends Visual {
         martin = new martin(ab, this);
 
         ap.play();
+
+        // ap.skip(60000);
     }
 
     public void keyPressed() {
@@ -65,69 +67,73 @@ public class AudioVisual extends Visual {
 
         if (seconds == 1) {
             // song fades in
+            // Rokas scene
             scene = 2;
-            // rokas.render();
         }
 
         if (seconds == 24) {
             // higher instrument introduced
+            // Callum scene
             scene = 1;
-            // callum.render();
         }
 
         if (seconds == 51) {
             // interesting instrument change here
+            // Dylan scene
             scene = 3;
-            // dylan.render();
         }
 
         if (seconds == 81) {
             // interesting instrument change here
-            scene = 1;
-            // martin.render()
+            // Martin scene
+            scene = 4;
         }
 
         if (seconds == 111) {
+            // Tempo change
+            // Dylan scene
             scene = 3;
-            // rokas.render();
         }
 
         if (seconds == 151) {
             // instruments slow down and go quiet here
+            // Rokas scene
             scene = 2;
-            // callum.render();
         }
 
         if (seconds == 185) {
             // instruments get very loud here
-            scene = 3;
+            // Martin scene
+            scene = 4;
         }
 
         if (seconds == 195) {
-            // scene = 4;
-            // martin.render();
-            scene = 1;
+            // Song climax
+            // Dylan scene
+            scene = 3;
         }
-        
+
         if (seconds == 219) {
             // strong bass here
-            scene = 3;
-            // dylan.render();
+            // Callum scene
+            scene = 1;
         }
 
         if (seconds == 241) {
             // orchestra
-            scene = 1;
+            // Dylan scene
+            scene = 3;
         }
 
         if (seconds == 265) {
             // more orchestra
-            scene = 3;
-            // rokas.render();
+            // Martin scene
+            scene = 4;
         }
 
         if (seconds == 287) {
-            // music dies out 
+            // music dies out
+            // Rokas scene
             scene = 2;
         }
     }

@@ -20,7 +20,10 @@ public class rokas extends Visual {
 
     public void render() 
     {
+        p.pushStyle();
         p.background(0);
+        p.stroke(0,0,0);
+
 
         for(int i = 0 ; i < ab.size() ; i ++)
         {
@@ -36,6 +39,8 @@ public class rokas extends Visual {
             drawSqTower(f, i, c);     
 
         } // end for
+
+        p.popStyle();
     }
 
     // method for generating a tower of squares based on a frequency
@@ -57,7 +62,6 @@ public class rokas extends Visual {
             
 
             p.rectMode(CENTER);
-            p.stroke(0,0,0);
 
             // gradient effect
             if(i <= sqCount / 2)

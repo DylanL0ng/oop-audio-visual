@@ -44,6 +44,7 @@ public class dylan extends Visual {
     */
     public void render() 
     {
+        p.pushStyle();
         // Reset the background each frame
         p.background(0);
 
@@ -66,6 +67,8 @@ public class dylan extends Visual {
             backgroundFiller.render(hue, i);
 
         } // end for
+
+        p.popStyle();
     } // end render()
 
     /*

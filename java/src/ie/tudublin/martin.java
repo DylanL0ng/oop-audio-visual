@@ -34,6 +34,7 @@ public class martin extends Visual
 
     public void render() 
     {
+        p.pushStyle();
         p.background(0);
         sum = 0;
     
@@ -82,6 +83,8 @@ public class martin extends Visual
             shape.update(average);
             shape.display(average); 
         }//end for
+
+        p.pushStyle();
     }//end render
 
     //determine music zone for given index
@@ -156,6 +159,7 @@ class CubeShape extends Shape
     void display(float average) 
     {
         this.average = average;
+        p.pushStyle();
         p.pushMatrix(); //save current transformation matrix
         p.translate(pos.x, pos.y, pos.z); //translate to current pos
         //Cube rotation - apply rotation on all axis
@@ -171,6 +175,7 @@ class CubeShape extends Shape
         p.fill(p.lerpColor(p.color(120, 100, 100, opacity), p.color(180, 100, 100, opacity), average * 10));
         p.box(size + average * 100);
         p.popMatrix();
+        p.popStyle();
     }//end display
 }//end CubeShape
 

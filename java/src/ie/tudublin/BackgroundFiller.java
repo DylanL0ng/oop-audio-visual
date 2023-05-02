@@ -10,7 +10,7 @@ public class BackgroundFiller {
 
     PVector pos;
 
-    float offset_1;
+    float offset_1 = 0.5f;
     float offset_2;
     
     /*
