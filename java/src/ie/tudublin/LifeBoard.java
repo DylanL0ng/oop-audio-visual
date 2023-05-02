@@ -289,4 +289,12 @@ public class LifeBoard {
             randomise(rand1, rand2);
         }
     }
+
+    public void clearBoard() {
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                board[row][col] = false;
+            }
+        }
+    }
 }

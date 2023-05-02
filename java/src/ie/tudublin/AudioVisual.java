@@ -2,12 +2,15 @@ package ie.tudublin;
 
 public class AudioVisual extends Visual {
 
-    LifeBoard life;
+    LifeBoard callum;
     rokas rokas;
     dylan dylan;
-    
+
     // song is 310 seconds long
     int seconds = 0;
+    int currentSecond = 0;
+
+    int scene = 0;
 
     public void settings() {
         size(1024, 800, P3D);
@@ -20,10 +23,10 @@ public class AudioVisual extends Visual {
 
         startMinim();
         loadAudio("data/aria_math.mp3");
-        
+
         smooth();
-        
-        life = new LifeBoard(frameSize / 8, ab, this);
+
+        callum = new LifeBoard(frameSize / 8, ab, this);
         rokas = new rokas(ab, this);
         dylan = new dylan(ab, ap, this);
 
@@ -32,64 +35,132 @@ public class AudioVisual extends Visual {
 
     public void keyPressed() {
         if (key == ' ') {
-            life.pause();
+            callum.pause();
             if (ap.isPlaying()) {
                 ap.pause();
             } else {
                 ap.play();
             }
-        } 
+        }
+
+        if (key == '1') {
+            scene = 1;
+        }
+        if (key == '2') {
+            scene = 2;
+        }
+        if (key == '3') {
+            scene = 3;
+        }
+        if (key == '4') {
+            scene = 4;
+        }
     }
 
     public void draw() {
-        dylan.render();
+        renderScene();
         time();
 
-        if (seconds <= 22) {
-            // song fades in 
-            rokas.render();
-        } 
-        
-        if (seconds > 22 && seconds <= 48) {
+        if (seconds == 1) {
+            // song fades in
+            scene = 2;
+            // rokas.render();
+        }
+
+        if (seconds == 24) {
             // higher instrument introduced
-            life.render();
+            scene = 1;
+            // callum.render();
         }
 
-        if (seconds > 48 && seconds <= 79) {
+        if (seconds == 51) {
             // interesting instrument change here
+            scene = 3;
+            // dylan.render();
         }
 
-        if (seconds > 79 && seconds <= 109) {
+        if (seconds == 81) {
             // interesting instrument change here
+            scene = 1;
+            // martin.render()
         }
 
-        if (seconds > 109 && seconds <= 150) {
+        if (seconds == 111) {
+            scene = 3;
+            // rokas.render();
+        }
+
+        if (seconds == 151) {
             // instruments slow down and go quiet here
+            scene = 2;
+            // callum.render();
         }
 
-        if (seconds > 150 && seconds <= 193) {
+        if (seconds == 185) {
             // instruments get very loud here
+            scene = 3;
         }
 
-        if (seconds > 193 && seconds <= 216) {
+        if (seconds == 195) {
+            // scene = 4;
+            // martin.render();
+            scene = 1;
+        }
+        
+        if (seconds == 219) {
             // strong bass here
+            scene = 3;
+            // dylan.render();
         }
 
-        if (seconds > 216 && seconds <= 262) {
-            // orchestra instruments here
+        if (seconds == 241) {
+            // orchestra
+            scene = 1;
         }
 
-        if (seconds > 262 && seconds <= 285) {
-            // instruments dying, song fades
+        if (seconds == 265) {
+            // more orchestra
+            scene = 3;
+            // rokas.render();
+        }
+
+        if (seconds == 287) {
+            // music dies out 
+            scene = 2;
         }
     }
 
     public void time() {
-        if (frameCount % 60 == 0) {
-            if (ap.isPlaying()) {
-                // seconds only get increased if the song is playing
-                seconds++;
-            }
+        int newSecond = millis() / 1000 % 60;
+        if (newSecond != currentSecond && ap.isPlaying()) {
+            // seconds only get increased if the song is playing
+            seconds++;
+            System.out.println(seconds);
+        }
+        currentSecond = newSecond;
+    }
+
+    public void renderScene() {
+        switch (scene) {
+            case 1:
+                callum.render();
+                break;
+
+            case 2:
+                rokas.render();
+                break;
+
+            case 3:
+                dylan.render();
+                break;
+
+            case 4:
+                // martin.render();
+                break;
+        }
+
+        if (scene != 1) {
+            callum.clearBoard();
         }
     }
 }
