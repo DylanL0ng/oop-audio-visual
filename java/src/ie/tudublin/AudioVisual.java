@@ -33,8 +33,6 @@ public class AudioVisual extends Visual {
         martin = new martin(ab, this);
 
         ap.play();
-
-        // ap.skip(60000);
     }
 
     public void keyPressed() {
@@ -143,7 +141,6 @@ public class AudioVisual extends Visual {
         if (newSecond != currentSecond && ap.isPlaying()) {
             // seconds only get increased if the song is playing
             seconds++;
-            System.out.println(seconds);
         }
         currentSecond = newSecond;
     }
