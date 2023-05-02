@@ -5,6 +5,7 @@ public class AudioVisual extends Visual {
     LifeBoard callum;
     rokas rokas;
     dylan dylan;
+    martin martin;
 
     // song is 310 seconds long
     int seconds = 0;
@@ -29,6 +30,7 @@ public class AudioVisual extends Visual {
         callum = new LifeBoard(frameSize / 8, ab, this);
         rokas = new rokas(ab, this);
         dylan = new dylan(ab, ap, this);
+        martin = new martin(ab, this);
 
         ap.play();
     }
