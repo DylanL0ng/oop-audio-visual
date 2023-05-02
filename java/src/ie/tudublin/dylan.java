@@ -32,7 +32,7 @@ public class dylan extends Visual {
         {
             int hue = i % 360;
 
-            innerCircle.render(hue);
+            innerCircle.render(hue, getAmplitude());
             backgroundFiller.render(hue, i);
         }
     }

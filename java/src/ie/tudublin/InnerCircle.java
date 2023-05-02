@@ -13,16 +13,12 @@ public class InnerCircle {
         this.pos = pos;
     }
 
-    void render(int hue)
+    void render(int hue, float amplitude)
     {
         p.pushStyle();
-        // p.circle(pos.x, pos.y, 50);
-        // p.fill(0, 0, 0);
-        
-        // p.noFill();
-        // p.stroke(hue, 360, 360);
-        // p.strokeWeight(p.random(1, 2));
-        p.circle(pos.x, pos.y, 50);
+        // Seems to be 0
+        // System.out.println(amplitude);
+        p.circle(pos.x, pos.y, amplitude);
 
         p.popStyle();
     }
