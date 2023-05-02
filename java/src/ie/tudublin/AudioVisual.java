@@ -12,7 +12,7 @@ public class AudioVisual extends Visual {
     dylan dylan;
 
     public void settings() {
-        size(1024, 800);
+        size(1024, 800, P3D);
     }
 
     public void setup() {
@@ -21,7 +21,7 @@ public class AudioVisual extends Visual {
         background(0);
 
         startMinim();
-        loadAudio("OOP-Project/data/aria_math.mp3");
+        loadAudio("data/aria_math.mp3");
         
         smooth();
         /*
@@ -31,7 +31,7 @@ public class AudioVisual extends Visual {
 
         life = new LifeBoard(frameSize / 8, ab, this);
         rokas = new rokas(ab, this);
-        dylan = new dylan(ab, this);
+        dylan = new dylan(ab, ap, this);
 
         ap.play();
 
