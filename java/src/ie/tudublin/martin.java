@@ -61,12 +61,14 @@ public class martin extends Visual
         //if shapes null - create them
         if (shapes == null) 
         {
+            //shapes in array list
             shapes = new ArrayList<>();
             //creates 5 cube, 5 lines, random position
             for (int i = 0; i < 15; i++) 
             {
                 shapes.add(new CubeShape(p, new PVector(p.random(p.width), p.random(p.height), p.random(-500, 500))));
-            }
+            }//end for
+
             //add audio waveforms for each side of the screen
             shapes.add(new AudioSpectrum(p, 0, ab)); //top
             shapes.add(new AudioSpectrum(p, 1, ab)); //bottom
@@ -79,8 +81,8 @@ public class martin extends Visual
         {
             shape.update(average);
             shape.display(average); 
-        }
-    }
+        }//end for
+    }//end render
 
     //determine music zone for given index
     private int getFrequencyZone(int index)
@@ -89,9 +91,9 @@ public class martin extends Visual
         if (frequency < 500) return 0; //Bass
         if (frequency < 5000) return 1; //Mid
         return 2; //Treble
-    }
+    }//end getFrequencyZone
     
-}
+}//end martin
 
 //template for different kinds of shapes
 abstract class Shape 
@@ -109,7 +111,7 @@ abstract class Shape
     abstract void update(float average);
     //drawing shape
     abstract void display(float average);
-}
+}//end Shape
 
 class CubeShape extends Shape 
 {
@@ -148,7 +150,7 @@ class CubeShape extends Shape
         speed.z = PApplet.map(bassAverage / 2, 0, 1, 1, 2); //maps bass average to Z-axis speed
         rotation += rotationSpeed + PApplet.map(average, 0, 1, 0.001f, 0.01f); //controls the rotation with music and random speed
         size = initialSize + PApplet.map(pos.z, -2000, 500, 0, 200) + average * 30; //update size - distance from camera in Z axis and music
-    }
+    }//end update
 
 
     void display(float average) 
@@ -169,8 +171,8 @@ class CubeShape extends Shape
         p.fill(p.lerpColor(p.color(120, 100, 100, opacity), p.color(180, 100, 100, opacity), average * 10));
         p.box(size + average * 100);
         p.popMatrix();
-    }
-}
+    }//end display
+}//end CubeShape
 
 //visualisation of pixel audio spectrum
 class AudioSpectrum extends Shape 
@@ -199,8 +201,8 @@ class AudioSpectrum extends Shape
         for (int i = 0; i < ab.size(); i++) 
         {
             lerpedBuffer[i] = PApplet.lerp(lerpedBuffer[i], ab.get(i), 0.1f);
-        }
-    }
+        }//end for
+    }//end update
 
     void display(float average) 
     {
@@ -245,7 +247,8 @@ class AudioSpectrum extends Shape
             for (int j = start; j < end; j++) 
             {
                 sum += PApplet.abs(lerpedBuffer[j]);
-            }
+            }//end for
+
             //average level of bar
             float level = sum / (end - start);
             float barHeightMapped = PApplet.map(level, 0, 1, 0, barHeight);
@@ -271,7 +274,7 @@ class AudioSpectrum extends Shape
                 //draw bar verically, top of screen down - mirror
                 p.rect(barX - barHeightMapped, i * barHeight / numBars + barGap, barHeightMapped, barHeight / numBars - barGap);
             }
-        }
-    }
-}
+        }//end for 
+    }//end display
+}//end AudioSpectrum
 
