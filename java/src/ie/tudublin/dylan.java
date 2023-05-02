@@ -14,6 +14,8 @@ public class dylan extends Visual {
     InnerCircle innerCircle;
     BackgroundFiller backgroundFiller;
 
+    float amplitude = 0.0f;
+
     dylan (AudioBuffer ab, AudioPlayer ap, PApplet p) {
         this.ab = ab;
         this.ap = ap;
@@ -32,8 +34,24 @@ public class dylan extends Visual {
         {
             int hue = i % 360;
 
-            innerCircle.render(hue, getAmplitude());
+            calculateAverageAmplitude();
+            innerCircle.render(hue, amplitude);
             backgroundFiller.render(hue, i);
         }
     }
+
+	public void calculateAverageAmplitude()
+	{
+        float sum = 0.0f;
+
+        for (int i = 0; i < ab.size(); i++) {
+            sum += AudioVisual.abs(ab.get(i));
+        }
+
+        // The average amplitude of the audio buffer.
+        float average = sum / ab.size();
+        
+        amplitude = average;
+	}
+
 }

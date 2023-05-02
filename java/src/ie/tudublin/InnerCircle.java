@@ -16,9 +16,11 @@ public class InnerCircle {
     void render(int hue, float amplitude)
     {
         p.pushStyle();
-        // Seems to be 0
-        // System.out.println(amplitude);
-        p.circle(pos.x, pos.y, amplitude);
+        
+        p.fill(100, 360, PApplet.map(360 * amplitude, 0, 360, 100, 360));
+
+        amplitude = amplitude * 1000f;
+        p.circle(pos.x, pos.y, PApplet.map(amplitude, 0, 1024, 100, 400));
 
         p.popStyle();
     }

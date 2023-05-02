@@ -10,8 +10,8 @@ public class BackgroundFiller {
 
     PVector pos;
 
-    float n4;
-    float n6;
+    float offset_1;
+    float offset_2;
     
     BackgroundFiller(PApplet p, PVector pos, AudioPlayer ap)
     {
@@ -20,42 +20,40 @@ public class BackgroundFiller {
         this.ap = ap;
     }
 
-    public void updateMovement(PVector pos)
-    {
-        this.pos = pos;
-    }
-
     public void render(int hue, int abIdx)
     {
-        float angle = p.sin(abIdx+n4)* 10; 
-        float angle2 = p.sin(abIdx+n6)* 300; 
+        float angle = PApplet.sin(abIdx+offset_1)* 3; 
+        float angle2 = PApplet.sin(abIdx+offset_2)* 300; 
     
-        float x = p.sin(p.radians(abIdx))*(angle2+30); 
-        float y = p.cos(p.radians(abIdx))*(angle2+30);
+        float degree = PApplet.radians(abIdx);
+
+        float x = PApplet.sin(degree)*(angle2+30); 
+        float y = PApplet.cos(degree)*(angle2+30);
     
-        float x2 = p.sin(p.radians(abIdx))*(500/angle); 
-        float y2 = p.cos(p.radians(abIdx))*(500/angle);
+        float x2 = PApplet.sin(degree)*(500/angle); 
+        float y2 = PApplet.cos(degree)*(500/angle);
 
         p.pushStyle();
         p.pushMatrix();
         
         p.translate(this.pos.x, this.pos.y);
         
-        p.fill (hue, 360, 360); //wt
-        p.rect(x2, y2, ap.left.get(abIdx)*20, ap.left.get(abIdx)*10);
+        p.fill (hue, 360, 360);
         
-        p.fill (hue, 360, 360); //orange
-        p.rect(x, y, ap.right.get(abIdx)*10, ap.left.get(abIdx)*10);
+        float leftChannel = ap.left.get(abIdx) * 10;
+        float rightChannel = ap.right.get(abIdx) * 10;
+
+        p.rect(x2, y2, leftChannel * 2, leftChannel);
+
+        p.rect(x, y, rightChannel, leftChannel);
         
-        
-        p.fill(hue, 360, 360); //wt
-        p.rect(x2, y2, ap.right.get(abIdx)*10, ap.right.get(abIdx)*20);
+        p.rect(x2, y2, rightChannel, rightChannel * 2);
         
         p.pushStyle();
         p.popMatrix();
 
-        n4 += 0.002;
-        n6 += 0.004;
+        offset_1 += 0.002;
+        offset_2 += 0.004;
     }
 
 }
