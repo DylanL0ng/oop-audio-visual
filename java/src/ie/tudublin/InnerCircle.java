@@ -42,10 +42,10 @@ public class InnerCircle {
         /*
         * Using map to set the brightness based on the 
         * amplitude levels, but give the circle a minimum
-        * brightness of 100, so that it doesn't fully disapear.
+        * brightness of 200, so that it doesn't fully disapear.
         */ 
-        float brightness = PApplet.map(360 * amplitude, 0, 360, 100, 360);
-        p.fill(100, 360, brightness);
+        float brightness = PApplet.map(360 * amplitude, 0, 360, 200, 360);
+        p.fill(0, 0, brightness);
 
         /*
          * Using map to set the width of the circle
